@@ -5,9 +5,9 @@ import base64
 import google.generativeai as genai           # LLM/KG Arborquest App
 import json
 import snowflake.connector
-import relationalai as rai
+
 import networkx as nx
-from relationalai.std.graphs import Graph
+
 from typing import List
 from infomap import Infomap
 import community as community_louvain
@@ -83,58 +83,6 @@ def get_connection():
     return snowflake.connector.connect(**SNOWFLAKE_CONFIG)
 
 
-def create_plant_knowledge_graph(
-    model_name: str = "PlantKnowledgeGraph",
-    snowflake_table: str = DEFAULT_SNOWFLAKE_TABLE,
-    plant_id_column: str = DEFAULT_PLANT_ID_COLUMN,
-    characteristic_columns: List[str] = None,
-    profile: str = "ecosystem"
-) -> rai.Model:
-    if characteristic_columns is None:
-        characteristic_columns = DEFAULT_CHARACTERISTIC_COLUMNS
-
-    st.write(f"Defining knowledge graph model '{model_name}'...")
-    model = rai.Model(model_name, profile=profile)
-
-    Observation = model.Type("Observation", source=snowflake_table)
-    Plant = model.Type("Plant")
-    Characteristic = model.Type("Characteristic")
-
-    with model.rule(dynamic=True):
-        for char_name in characteristic_columns:
-            obs = Observation()
-            char_value = getattr(obs, char_name)
-
-            plant = Plant.add(name=getattr(obs, plant_id_column))
-            characteristic = Characteristic.add(name=char_name, value=char_value)
-            plant.has_characteristic.add(characteristic)
-
-    st.write("Submitting model for deployment...")
-    model.build()
-
-    st.write("Model build complete.")
-    return model
-
-
-def get_networkx_graph_from_rai(
-    model_name: str,
-    profile: str = "ecosystem"
-) -> nx.Graph:
-    model = rai.Model(model_name, profile=profile)
-    community_graph = Graph(model)
-    data = community_graph.fetch()
-
-    G = nx.Graph()
-    for edge_id, edge_data in data.get("edges", {}).items():
-        source = edge_data.get("source")
-        target = edge_data.get("target")
-        if source and target:
-            G.add_edge(source, target)
-
-    for node_id, node_data in data.get("nodes", {}).items():
-        G.add_node(node_id, **node_data)
-
-    return G
     
 def build_filter_where_clause(genus=None, growth_habit=None, bloom_period=None):
     conditions = []
