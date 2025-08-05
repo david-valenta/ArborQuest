@@ -9,7 +9,3 @@ infomap
 python-louvain
 scikit-learn
 tqdm
-cmake>=3.18
-pyarrow
-protobuf>=3.20.2,<6.0.0
-
