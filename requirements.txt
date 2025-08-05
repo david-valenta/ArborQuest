@@ -3,9 +3,10 @@ pandas
 requests
 google-generativeai
 snowflake-connector-python
-relationalai
+
 networkx
 infomap
 python-louvain
 scikit-learn
 tqdm
+
