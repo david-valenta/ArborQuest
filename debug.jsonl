@@ -1,0 +1,2 @@
+{"event": "warn", "timestamp": "2025-08-04T19:03:11.063519Z", "parent_id": null, "warning": "pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy."}
+{"event": "warn", "timestamp": "2025-08-04T19:04:02.541116Z", "parent_id": null, "warning": "pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy."}
