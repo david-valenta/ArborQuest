@@ -10,4 +10,5 @@ python-louvain
 scikit-learn
 tqdm
 cmake>=3.18
+pyarrow
 
